@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro - DriveXpert</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Erro</h1>
+            <p><%= message %></p>
+            <% if (error && Object.keys(error).length > 0) { %>
+                <pre><%= JSON.stringify(error, null, 2) %></pre>
+            <% } %>
+            <a href="/" class="button">Voltar para a página inicial</a>
+        </div>
+    </div>
+</body>
+</html> 
