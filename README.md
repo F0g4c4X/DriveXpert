@@ -5,7 +5,7 @@ Sistema web para avaliação de carros com diferentes perfis de usuários (clien
 ## Requisitos
 
 - Node.js (versão 14 ou superior)
-- MongoDB
+- PostgresSQL
 - NPM ou Yarn
 
 ## Instalação
