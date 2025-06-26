@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Avaliação</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .rating-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .rating-excelente { background: #d4edda; color: #155724; }
+        .rating-otimo { background: #d1ecf1; color: #0c5460; }
+        .rating-bom { background: #fff3cd; color: #856404; }
+        .rating-regular { background: #f8d7da; color: #721c24; }
+        .rating-ruim { background: #f5c6cb; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-4">
+            <i class="bi bi-clipboard-check"></i>
+            Detalhes da Avaliação
+        </h2>
+
+        <% if (evaluation && evaluation.car) { %>
+            <div class="section mb-4">
+                <h4>Informações do Veículo</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Marca:</strong> <%= evaluation.car.marca %></p>
+                        <p><strong>Modelo:</strong> <%= evaluation.car.modelo %></p>
+                        <p><strong>Ano:</strong> <%= evaluation.car.ano %></p>
+                        <p><strong>Placa:</strong> <%= evaluation.car.placa %></p>
+                        <p><strong>Cor:</strong> <%= evaluation.car.cor %></p>
+                        <p><strong>Quilometragem:</strong> <%= evaluation.car.kilometragem.toLocaleString() %> km</p>
+                        <p><strong>Combustível:</strong> <%= evaluation.car.combustivel %></p>
+                        <p><strong>Preço Original:</strong> R$ <%= evaluation.car.preco ? evaluation.car.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2}) : 'Não informado' %></p>
+                    </div>
+                    <div class="col-md-6">
+                        <% if (evaluation.car.observacoes) { %>
+                            <p><strong>Observações do Vendedor:</strong> <%= evaluation.car.observacoes %></p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="section mb-4">
+            <h4>Informações da Avaliação</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Preço Avaliado:</strong> R$ <%= evaluation.preco_avaliado.toLocaleString('pt-BR', {minimumFractionDigits: 2}) %></p>
+                    <p><strong>Estado Geral:</strong> <span class="rating-badge rating-<%= evaluation.estado_geral.toLowerCase() %>"><%= evaluation.estado_geral %></span></p>
+                    <p><strong>Data da Avaliação:</strong> <%= evaluation.data_avaliacao.toLocaleDateString('pt-BR') %></p>
+                </div>
+                <div class="col-md-6">
+                    <% if (evaluation.avaliador) { %>
+                        <p><strong>Avaliador:</strong> <%= evaluation.avaliador.name %> (<%= evaluation.avaliador.email %>)</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="section mb-4">
+            <h4>Detalhes Técnicos</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Motor:</strong> <span class="rating-badge rating-<%= evaluation.motor_estado.toLowerCase() %>"><%= evaluation.motor_estado %></span></p>
+                    <% if (evaluation.motor_observacao) { %>
+                        <p><small><em><%= evaluation.motor_observacao %></em></small></p>
+                    <% } %>
+                    <p><strong>Carroceria:</strong> <span class="rating-badge rating-<%= evaluation.carroceria_estado.toLowerCase() %>"><%= evaluation.carroceria_estado %></span></p>
+                    <% if (evaluation.carroceria_observacao) { %>
+                        <p><small><em><%= evaluation.carroceria_observacao %></em></small></p>
+                    <% } %>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Interior:</strong> <span class="rating-badge rating-<%= evaluation.interior_estado.toLowerCase() %>"><%= evaluation.interior_estado %></span></p>
+                    <% if (evaluation.interior_observacao) { %>
+                        <p><small><em><%= evaluation.interior_observacao %></em></small></p>
+                    <% } %>
+                    <p><strong>Documentação:</strong> <span class="rating-badge rating-<%= evaluation.documentacao_estado.toLowerCase() %>"><%= evaluation.documentacao_estado %></span></p>
+                    <% if (evaluation.documentacao_observacao) { %>
+                        <p><small><em><%= evaluation.documentacao_observacao %></em></small></p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <% if (evaluation.observacoes) { %>
+            <div class="section mb-4">
+                <h4>Observações Gerais</h4>
+                <p><em><%= evaluation.observacoes %></em></p>
+            </div>
+        <% } %>
+
+        <div class="mt-4">
+            <a href="/evaluations/my" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Voltar para Minhas Avaliações
+            </a>
+        </div>
+    </div>
+</body>
+</html> 

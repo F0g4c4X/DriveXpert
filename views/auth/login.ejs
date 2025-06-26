@@ -35,10 +35,8 @@
                 <p class="text-muted">Sistema de Avaliação de Carros</p>
             </div>
 
-            <% if (typeof error !== 'undefined') { %>
-                <div class="alert alert-danger" role="alert">
-                    <%= error %>
-                </div>
+            <% if (error) { %>
+                <div class="alert alert-danger" role="alert"><%= error %></div>
             <% } %>
 
             <form action="/auth/login" method="POST">

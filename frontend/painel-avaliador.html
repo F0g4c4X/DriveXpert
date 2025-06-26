@@ -1,1 +1,49 @@
-...
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Avaliador</title>
+  <link rel="stylesheet" href="/public/styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+    .container { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 32px; }
+    h1 { text-align: center; }
+    .erro { color: #b00; background: #fee; padding: 12px; border-radius: 4px; margin-bottom: 16px; text-align: center; }
+    .car-list { margin-top: 24px; }
+    .car-card { background: #f0f0f0; border-radius: 6px; padding: 16px; margin-bottom: 16px; }
+    .car-card strong { display: inline-block; width: 120px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Painel do Avaliador</h1>
+    <div id="erro" class="erro" style="display:none"></div>
+    <div id="car-list" class="car-list"></div>
+  </div>
+  <script>
+    async function carregarPendentes() {
+      const erroDiv = document.getElementById('erro');
+      const carList = document.getElementById('car-list');
+      erroDiv.style.display = 'none';
+      carList.innerHTML = '<em>Carregando avaliações pendentes...</em>';
+      try {
+        const res = await fetch('/evaluations/pending', { credentials: 'include' });
+        if (!res.ok) {
+          let msg = 'Erro ao buscar avaliações (' + res.status + ')';
+          try { const data = await res.json(); if (data && data.message) msg += ': ' + data.message; } catch {}
+          throw new Error(msg);
+        }
+        const html = await res.text();
+        // Se vier HTML, insere direto (pois backend renderiza EJS)
+        carList.innerHTML = html;
+      } catch (err) {
+        erroDiv.textContent = err.message || 'Erro inesperado.';
+        erroDiv.style.display = 'block';
+        carList.innerHTML = '';
+      }
+    }
+    window.onload = carregarPendentes;
+  </script>
+</body>
+</html>

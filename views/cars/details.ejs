@@ -3,163 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveXpert - Detalhes do Carro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Detalhes do Carro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        .details-container {
-            max-width: 900px;
-            margin: 40px auto;
+        .section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
         }
-        .info-card {
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+        .rating-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
         }
-        .evaluation-status {
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .evaluation-item {
-            border-left: 3px solid #007bff;
-            padding-left: 15px;
-            margin-bottom: 15px;
-        }
+        .rating-excelente { background: #d4edda; color: #155724; }
+        .rating-otimo { background: #d1ecf1; color: #0c5460; }
+        .rating-bom { background: #fff3cd; color: #856404; }
+        .rating-regular { background: #f8d7da; color: #721c24; }
+        .rating-ruim { background: #f5c6cb; color: #721c24; }
     </style>
 </head>
-<body class="bg-light">
-    <div class="container details-container">
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="/cars/my">Meus Carros</a></li>
-                <li class="breadcrumb-item active">Detalhes</li>
-            </ol>
-        </nav>
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-4">
+            <i class="bi bi-car-front"></i>
+            Detalhes do Carro
+        </h2>
 
-        <div class="card info-card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div>
-                        <h2 class="mb-1"><%= car.marca %> <%= car.modelo %></h2>
-                        <p class="text-muted mb-0">Ano <%= car.ano %></p>
-                    </div>
-                    <% if (car.status === 'pendente') { %>
-                        <span class="badge bg-warning">Pendente</span>
-                    <% } else if (car.status === 'avaliado') { %>
-                        <span class="badge bg-success">Avaliado</span>
-                    <% } else { %>
-                        <span class="badge bg-primary">Vendido</span>
-                    <% } %>
-                </div>
-
+        <% if (car) { %>
+            <div class="section mb-4">
+                <h4>Informações do Veículo</h4>
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>Informações do Veículo</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="bi bi-speedometer2"></i>
-                                <strong>Kilometragem:</strong> <%= car.kilometragem.toLocaleString() %> km
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-tag"></i>
-                                <strong>Placa:</strong> <%= car.placa %>
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-palette"></i>
-                                <strong>Cor:</strong> <%= car.cor %>
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-fuel-pump"></i>
-                                <strong>Combustível:</strong> <%= car.combustivel.charAt(0).toUpperCase() + car.combustivel.slice(1) %>
-                            </li>
-                        </ul>
+                        <p><strong>Marca:</strong> <%= car.marca %></p>
+                        <p><strong>Modelo:</strong> <%= car.modelo %></p>
+                        <p><strong>Ano:</strong> <%= car.ano %></p>
+                        <p><strong>Placa:</strong> <%= car.placa %></p>
+                        <p><strong>Cor:</strong> <%= car.cor %></p>
+                        <p><strong>Quilometragem:</strong> <%= car.kilometragem.toLocaleString() %> km</p>
+                        <p><strong>Combustível:</strong> <%= car.combustivel %></p>
+                        <p><strong>Preço Original:</strong> R$ <%= car.preco ? car.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2}) : 'Não informado' %></p>
+                        <p><strong>Status:</strong> <%= car.status %></p>
                     </div>
                     <div class="col-md-6">
-                        <h5>Informações do Proprietário</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="bi bi-person"></i>
-                                <strong>Nome:</strong> <%= car.proprietario.name %>
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-envelope"></i>
-                                <strong>Email:</strong> <%= car.proprietario.email %>
-                            </li>
-                        </ul>
+                        <% if (car.observacoes) { %>
+                            <p><strong>Observações do Vendedor:</strong> <%= car.observacoes %></p>
+                        <% } %>
+                        <% if (car.vendedor) { %>
+                            <p><strong>Vendedor:</strong> <%= car.vendedor.name %> (<%= car.vendedor.email %>)</p>
+                        <% } %>
                     </div>
-                </div>
-
-                <% if (car.observacoes) { %>
-                    <div class="mt-3">
-                        <h5>Observações</h5>
-                        <p class="mb-0"><%= car.observacoes %></p>
-                    </div>
-                <% } %>
-            </div>
-        </div>
-
-        <% if (car.evaluation) { %>
-            <div class="card info-card">
-                <div class="card-body">
-                    <h4 class="mb-4">Avaliação Técnica</h4>
-                    
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h5>Preço Avaliado</h5>
-                            <h3 class="text-primary">R$ <%= car.evaluation.precoAvaliado.toLocaleString() %></h3>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Estado Geral</h5>
-                            <h3><%= car.evaluation.estadoGeral %></h3>
-                        </div>
-                    </div>
-
-                    <h5 class="mb-3">Itens Avaliados</h5>
-                    <div class="evaluation-item">
-                        <h6>Motor</h6>
-                        <p class="mb-1"><strong>Estado:</strong> <%= car.evaluation.itensAvaliados.motor.estado %></p>
-                        <p class="text-muted mb-0"><%= car.evaluation.itensAvaliados.motor.observacao %></p>
-                    </div>
-
-                    <div class="evaluation-item">
-                        <h6>Carroceria</h6>
-                        <p class="mb-1"><strong>Estado:</strong> <%= car.evaluation.itensAvaliados.carroceria.estado %></p>
-                        <p class="text-muted mb-0"><%= car.evaluation.itensAvaliados.carroceria.observacao %></p>
-                    </div>
-
-                    <div class="evaluation-item">
-                        <h6>Interior</h6>
-                        <p class="mb-1"><strong>Estado:</strong> <%= car.evaluation.itensAvaliados.interior.estado %></p>
-                        <p class="text-muted mb-0"><%= car.evaluation.itensAvaliados.interior.observacao %></p>
-                    </div>
-
-                    <div class="evaluation-item">
-                        <h6>Documentação</h6>
-                        <p class="mb-1"><strong>Estado:</strong> <%= car.evaluation.itensAvaliados.documentacao.estado %></p>
-                        <p class="text-muted mb-0"><%= car.evaluation.itensAvaliados.documentacao.observacao %></p>
-                    </div>
-
-                    <% if (car.evaluation.observacoes) { %>
-                        <div class="mt-4">
-                            <h5>Observações do Avaliador</h5>
-                            <p class="mb-0"><%= car.evaluation.observacoes %></p>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-        <% } else if (car.status === 'pendente') { %>
-            <div class="evaluation-status bg-light">
-                <div class="text-center">
-                    <i class="bi bi-clipboard-check display-4 text-muted"></i>
-                    <h4 class="mt-3">Aguardando Avaliação</h4>
-                    <p class="text-muted">Este veículo ainda não foi avaliado por um de nossos especialistas.</p>
                 </div>
             </div>
         <% } %>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <% if (car && car.evaluation) { %>
+            <div class="section mb-4">
+                <h4>Avaliação Técnica</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Preço Avaliado:</strong> R$ <%= car.evaluation.preco_avaliado.toLocaleString('pt-BR', {minimumFractionDigits: 2}) %></p>
+                        <p><strong>Estado Geral:</strong> <span class="rating-badge rating-<%= car.evaluation.estado_geral.toLowerCase() %>"><%= car.evaluation.estado_geral %></span></p>
+                        <p><strong>Data da Avaliação:</strong> <%= car.evaluation.data_avaliacao.toLocaleDateString('pt-BR') %></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Motor:</strong> <span class="rating-badge rating-<%= car.evaluation.motor_estado.toLowerCase() %>"><%= car.evaluation.motor_estado %></span></p>
+                        <% if (car.evaluation.motor_observacao) { %>
+                            <p><small><em><%= car.evaluation.motor_observacao %></em></small></p>
+                        <% } %>
+                        <p><strong>Carroceria:</strong> <span class="rating-badge rating-<%= car.evaluation.carroceria_estado.toLowerCase() %>"><%= car.evaluation.carroceria_estado %></span></p>
+                        <% if (car.evaluation.carroceria_observacao) { %>
+                            <p><small><em><%= car.evaluation.carroceria_observacao %></em></small></p>
+                        <% } %>
+                        <p><strong>Interior:</strong> <span class="rating-badge rating-<%= car.evaluation.interior_estado.toLowerCase() %>"><%= car.evaluation.interior_estado %></span></p>
+                        <% if (car.evaluation.interior_observacao) { %>
+                            <p><small><em><%= car.evaluation.interior_observacao %></em></small></p>
+                        <% } %>
+                        <p><strong>Documentação:</strong> <span class="rating-badge rating-<%= car.evaluation.documentacao_estado.toLowerCase() %>"><%= car.evaluation.documentacao_estado %></span></p>
+                        <% if (car.evaluation.documentacao_observacao) { %>
+                            <p><small><em><%= car.evaluation.documentacao_observacao %></em></small></p>
+                        <% } %>
+                    </div>
+                </div>
+                <% if (car.evaluation.observacoes) { %>
+                    <div class="mt-3">
+                        <strong>Observações do Avaliador:</strong>
+                        <p><em><%= car.evaluation.observacoes %></em></p>
+                    </div>
+                <% } %>
+            </div>
+        <% } %>
+
+        <div class="mt-4">
+            <a href="/cars/available" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Voltar para Carros Disponíveis
+            </a>
+        </div>
+    </div>
 </body>
 </html> 

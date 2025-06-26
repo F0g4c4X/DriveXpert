@@ -24,9 +24,8 @@ const Car = sequelize.define('Car', {
         allowNull: false
     },
     placa: {
-        type: DataTypes.STRING(10),
-        allowNull: false,
-        unique: true
+        type: DataTypes.STRING(50),
+        allowNull: false
     },
     cor: {
         type: DataTypes.STRING(30),
